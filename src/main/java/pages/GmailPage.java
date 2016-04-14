@@ -9,35 +9,28 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
 
-
 public class GmailPage {
     private By emailAddress = By.id("Email");
     private By nextButton = By.id("next");
     private By passwordField = By.id("Passwd");
     private By signInButton = By.id("signIn");
+    private By pageIsLoaded = By.xpath(".//*[@id='gb_70']");
     private String pageURL = "http://gmail.com";
     private static By objOnGmailPage = By.xpath(".//a[@class='appbar-title']//span[@itemprop = 'title']");
+    private long timeout = 3000;
 
-    @Step ("Login to Gmail")
-    public void loginToGmail(String gmailLoginName, String gmailPassword) {
+    @Step("Login to Gmail")
+    public boolean loginToGmail(String gmailLoginName, String gmailPassword) {
 
         open(pageURL);
-        $(emailAddress).shouldBe(Condition.visible).sendKeys(gmailLoginName);
+        $(emailAddress).waitUntil(Condition.visible, timeout).sendKeys(gmailLoginName);
         $(nextButton).click();
-        $(passwordField).shouldBe(Condition.visible).sendKeys(gmailPassword);
+        $(passwordField).waitUntil(Condition.visible, timeout).sendKeys(gmailPassword);
         $(signInButton).click();
+        $(pageIsLoaded).waitUntil(Condition.visible, timeout);
+        return $$(objOnGmailPage).size() >= 1;
 
 
     }
-    @Step ("Verify than login to gmail page was done")
-    public static boolean isLoginToGmail() {
-
-        if ($$(objOnGmailPage).size() >= 1) {
-            return false;
-        }
-        return true;
-
-    }
-
-
 }
+
