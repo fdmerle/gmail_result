@@ -8,6 +8,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
+import org.openqa.selenium.NoSuchElementException;
+
 
 public class GmailPage {
     private By emailAddress = By.id("Email");
@@ -28,7 +30,15 @@ public class GmailPage {
         $(passwordField).waitUntil(Condition.visible, timeout).sendKeys(gmailPassword);
         $(signInButton).click();
         $(pageIsLoaded).waitUntil(Condition.visible, timeout);
-        return $$(objOnGmailPage).size() >= 1;
+
+        try {
+            $(objOnGmailPage).waitUntil(Condition.visible, timeout);
+        } catch (NoSuchElementException ex) {
+
+            return false;
+
+        }
+        return true;
 
 
     }
