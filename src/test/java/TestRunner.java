@@ -8,7 +8,6 @@ public class TestRunner extends MainTest {
 
     @Test
     public void testRunner() {
-        gmailPage.loginToGmail(gmailLogin.loginName, gmailLogin.passWord);
-        Assert.assertTrue(GmailPage.isLoginToGmail());
+        Assert.assertTrue(gmailPage.loginToGmail(gmailLogin.loginName, gmailLogin.passWord));
     }
 }
